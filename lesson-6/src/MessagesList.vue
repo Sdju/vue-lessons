@@ -12,18 +12,22 @@ const chat = useChat()
       v-once 
       :class="$style['message']"
     />
-    <div
-      v-for="message in chat.messages"
-      :key="message.id"
-      class=""
-      :class="{
-        [$style['message']]: true,
-        [$style['message--loading']]: !(message.completed || message.error),
-        [$style['message--error']]: message.error,
-      }"
+    <TransitionGroup
+      tag="div"
+      name="fade"
     >
-      {{ message.content }}
-    </div>
+      <div
+        v-for="message in chat.messages"
+        :key="message.id"
+        :class="{
+          [$style['message']]: true,
+          [$style['message--loading']]: !(message.completed || message.error),
+          [$style['message--error']]: message.error,
+        }"
+      >
+        {{ message.content }}
+      </div>
+    </TransitionGroup>
   </div>
 </template>
 
@@ -38,5 +42,6 @@ const chat = useChat()
 
 .message--error {
   color: red;
+  transition: none !important;
 }
 </style>

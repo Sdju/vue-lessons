@@ -13,10 +13,10 @@ export interface Message {
 }
 
 let id = 0
-function createMessage(completed = false): Message {
+function createMessage(text?: string, completed = false): Message {
     return {
         author: 0,
-        content: Math.random().toString(),
+        content: text ?? Math.random().toString(),
         time: Date.now(),
         id: id++,
         completed
@@ -26,7 +26,7 @@ function createMessage(completed = false): Message {
 function createChannel(): Channel {
     return {
         id: String(id++),
-        messages: Array.from({ length: 5 }, () => createMessage(true))
+        messages: Array.from({ length: 5 }, () => createMessage(undefined, true))
     }
 }
 
@@ -46,19 +46,19 @@ export const useChat = defineStore('chat', () => {
 
     const messages = computed(() => activeChannel.value?.messages || [])
 
-    async function addMessage(): Promise<{ success: boolean; value: unknown }> {
+    async function addMessage(text?: string): Promise<{ success: boolean; value: unknown }> {
         let message: Message | null = null
         let tries = 5
         let value = null
         let success = false
 
-        message = reactive(createMessage())
+        message = reactive(createMessage(text))
         messages.value.push(message)
 
         while (tries) {
             try {
                 await new Promise((resolve, reject) => {
-                    setTimeout(Math.random() > 0.2 ? reject : resolve, 2000)
+                    setTimeout(Math.random() > 0.1 ? reject : resolve, 200)
                 })
                 console.log(`success ${message.id} (${tries} tries)`)
 

@@ -23,7 +23,7 @@ const router = createRouter({
       path: '/chat/:id',
       name: 'chat',
       component: () => import('@/views/ChatView.vue').then((comp) => {
-        return new Promise((resolve) => setTimeout(() => resolve(comp), 5000))
+        return new Promise((resolve) => setTimeout(() => resolve(comp), 500))
       }),
       meta: {
         chatParamId: 'id',
@@ -35,7 +35,7 @@ const router = createRouter({
       path: '/about',
       name: 'about',
       component: () => import('@/views/AboutView.vue').then((comp) => {
-        return new Promise((resolve) => setTimeout(() => resolve(comp), 5000))
+        return new Promise((resolve) => setTimeout(() => resolve(comp), 500))
       }),
       meta: {
         authRequired: false,

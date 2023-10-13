@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import MessagesList from '@/MessagesList.vue';
 import {useChat} from '@/stores/chat';
 import {useRoute, useRouter} from 'vue-router';
 import {useAuth} from '@/stores/auth';
-import {watchEffect} from 'vue';
+import {ref, watchEffect} from 'vue';
 import {isLoading} from '@/router';
+import MyButton from '@/components/MyButton.vue';
 
 const chat = useChat()
 const auth = useAuth()
@@ -20,6 +20,8 @@ watchEffect(() => {
   })
 })
 
+const show = ref(false)
+
 </script>
 
 <template>
@@ -30,6 +32,8 @@ watchEffect(() => {
     <RouterLink :to="{ name: 'about' }">
       About
     </RouterLink>
+
+    <br>
 
     <button @click="auth.isAuth = !auth.isAuth">
       {{ auth.isAuth ? 'Log out' : 'Log in' }}
@@ -53,14 +57,50 @@ watchEffect(() => {
     </div>
     <RouterView />
 
-    <MessagesList />
-    <button @click="chat.addMessage()">
-      Send Message
+    <br>
+
+    <button @click="show = !show">
+      Toggle
     </button>
+
+    <div style="height: 48px">
+      <Transition>
+        <component :is="show ? 'a' : 'span'">
+          hello
+        </component>
+      </Transition>
+    </div>
+    
+    <MyButton
+      @click="show = !show"
+    />
+    <MyButton is-link />
+    <MyButton
+      is-link
+      href="/about"
+    />
+    <MyButton
+      is-link
+      style="color: blue"
+      class="test-class"
+      href="/about"
+    >
+      To About
+    </MyButton>
+
+    <div
+      style="padding: 1em; background: #282828"
+    >
+      <div
+        style="padding: 2em; background: #00bd7e"
+        @click.once="show = !show"
+      />
+    </div>
   </div>
 </template>
 
 <style>
+
 .chat-nav {
   display: flex;
   flex-direction: column;
@@ -70,65 +110,36 @@ watchEffect(() => {
   color: lime;
 }
 
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
+body {
+  background: #222222;
+  color: #CCC;
+  min-height: 100vh;
   width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+a {
+  color: #00bd7e;
+  text-decoration: none;
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+button {
+  background: rgb(75, 126, 40);
+  border-radius: 4px;
+  padding: 0.7rem 1rem;
+  border: 1px solid rgb(63, 103, 35);
+  color: #EEE;
+  cursor: pointer;
 }
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+p {
+  margin: 0;
 }
 
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
 </style>
