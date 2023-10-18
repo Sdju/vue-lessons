@@ -5,6 +5,7 @@ import {useRoute, useRouter} from 'vue-router';
 import {useAuth} from '@/stores/auth';
 import {watchEffect} from 'vue';
 import {isLoading} from '@/router';
+import MyTest from '@/components/my-test.vue';
 
 const chat = useChat()
 const auth = useAuth()
@@ -24,6 +25,7 @@ watchEffect(() => {
 
 <template>
   <div>
+    <MyTest />
     <RouterLink :to="{ name: 'home' }">
       Home
     </RouterLink>
